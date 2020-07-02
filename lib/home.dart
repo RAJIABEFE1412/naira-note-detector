@@ -38,12 +38,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // function for outputting the naira note recognized out as speech
-  modelSpeak(amount) async {
-    await flutterTts.setLanguage("en-US");
-    await flutterTts.setPitch(0.85);
-    await flutterTts.speak(amount);
-    await flutterTts.setSpeechRate(0.75);
-  }
+  
 
   loadModel() async {
     String res;

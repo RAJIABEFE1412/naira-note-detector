@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'models.dart';
 
+import "package:flutter_tts/flutter_tts.dart";
+
 class BndBox extends StatelessWidget {
+
+  final FlutterTts flutterTts = FlutterTts();
   final List<dynamic> results;
   final int previewH;
   final int previewW;
@@ -10,11 +14,23 @@ class BndBox extends StatelessWidget {
   final double screenW;
   final String model;
 
+
   BndBox(this.results, this.previewH, this.previewW, this.screenH, this.screenW,
       this.model);
 
+
+modelSpeak(amount) async {
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setPitch(0.85);
+    await flutterTts.speak(amount);
+    await flutterTts.setSpeechRate(0.75);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+    
     List<Widget> _renderBoxes() {
       return results.map((re) {
         var _x = re["rect"]["x"];
@@ -22,6 +38,11 @@ class BndBox extends StatelessWidget {
         var _y = re["rect"]["y"];
         var _h = re["rect"]["h"];
         var scaleW, scaleH, x, y, w, h;
+        if(double.tryParse('${(re["confidence"] * 100).toStringAsFixed(0)}') >= 60){
+          modelSpeak("${re["detectedClass"]}");
+        }
+
+        modelSpeak('${re["detectedClass"]}');
 
         if (screenH / screenW > previewH / previewW) {
           scaleW = screenH / previewH * previewW;
